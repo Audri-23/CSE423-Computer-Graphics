@@ -153,12 +153,6 @@ def draw_shapes():
 def keyboardListener(key, x, y):
     global player_pos, current_pos, top, play, game_over, score, score_inc, obstacles, road_segment_start, road_segment_end, ending, dist, camera_pos, looking, start, cheat, speed, side
     if start:
-        # # Move forward (W key)
-        # if key == b'w':  
-
-        # # Move backward (S key)
-        # if key == b's':
-
         if key == b'a' and play:
             if current_pos!="left":
                 if current_pos=="right":
@@ -166,7 +160,6 @@ def keyboardListener(key, x, y):
                 else:
                     current_pos="left"
 
-        # Rotate gun right (D key)
         if key == b'd' and play:
             if current_pos!="right":
                 if current_pos=="left":
@@ -227,25 +220,12 @@ def specialKeyListener(key, x, y):
         # # Move camera down (DOWN arrow key)
         if key == GLUT_KEY_DOWN and z>=250:
             z-=2
-
-        # # moving camera left (LEFT arrow key)
-        # if key == GLUT_KEY_LEFT:
-        #     x -= 1  # Small angle decrement for smooth movement
-
-        # # moving camera right (RIGHT arrow key)
-        # if key == GLUT_KEY_RIGHT:
-        #     x += 1  # Small angle increment for smooth movement
-
         camera_pos = (x, y, z)
 
 
 def mouseListener(button, state, x, y):
     global fpp, start
     if start:
-        # # Left mouse button fires a bullet
-        # if button == GLUT_LEFT_BUTTON and state == GLUT_DOWN:
-
-        # Right mouse button toggles camera tracking mode
         if button == GLUT_RIGHT_BUTTON and state == GLUT_DOWN:
             fpp=not fpp
 
@@ -258,8 +238,6 @@ def setupCamera():
     gluPerspective(fovY, 1.25, 0.1, 1500) # Think why aspect ration is 1.25?
     glMatrixMode(GL_MODELVIEW)  # Switch to model-view matrix mode
     glLoadIdentity()  # Reset the model-view matrix
-
-    # Extract camera position and look-at target
     
     if fpp:
         x=player_pos[0]-15
@@ -281,10 +259,9 @@ def setupCamera():
             a,b,c = looking
             d,e,f=up_vector
     
-    # Position the camera and set its orientation
-    gluLookAt(x, y, z,  # Camera position
-              a, b, c,  # Look-at target
-              d, e, f)  # Up vector (z-axis)
+    gluLookAt(x, y, z,  
+              a, b, c,
+              d, e, f)
 
 
 def idle():
@@ -352,19 +329,17 @@ def idle():
                     road_segment_start[i]-=1200
                     road_segment_end[i]-=1200
 
-    # Ensure the screen updates with the latest changes
     glutPostRedisplay()
 
 
 def showScreen():
     global road_segment_start, road_segment_end, road_half, camera_pos, score, cheat, play, game_over, h_score, start
     if start:
-        # Clear color and depth buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()  # Reset modelview matrix
-        glViewport(0, 0, 1000, 800)  # Set viewport size
+        glLoadIdentity()
+        glViewport(0, 0, 1000, 800)
 
-        setupCamera()  # Configure camera perspective
+        setupCamera()
 
         #road
         for i in range(3):
@@ -425,7 +400,6 @@ def showScreen():
 
         draw_shapes()
 
-        # Display game info text at a fixed screen position
         if game_over:
             draw_text(440, 660, f"Game Over!")
             draw_text(455, 630, f"Score: {score}")
@@ -461,7 +435,6 @@ def showScreen():
         draw_text(435, 280, f"Press e to Exit")
     
 
-    # Swap buffers for smooth rendering (double buffering)
     glutSwapBuffers()
 
 def draw_text(x, y, text, font=GLUT_BITMAP_TIMES_ROMAN_24):
@@ -493,18 +466,18 @@ def draw_text(x, y, text, font=GLUT_BITMAP_TIMES_ROMAN_24):
 # Main function to set up OpenGL window and loop
 def main():
     glutInit()
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)  # Double buffering, RGB color, depth test
-    glutInitWindowSize(1000, 800)  # Window size
-    glutInitWindowPosition(480,100)  # Window position
-    wind = glutCreateWindow(b"3D OpenGL Intro")  # Create the window
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitWindowSize(1000, 800)
+    glutInitWindowPosition(480,100)
+    wind = glutCreateWindow(b"Infinite Road Traffic Survival Simulator")
 
-    glutDisplayFunc(showScreen)  # Register display function
-    glutKeyboardFunc(keyboardListener)  # Register keyboard listener
+    glutDisplayFunc(showScreen)
+    glutKeyboardFunc(keyboardListener)
     glutSpecialFunc(specialKeyListener)
     glutMouseFunc(mouseListener)
-    glutIdleFunc(idle)  # Register the idle function to move the bullet automatically
+    glutIdleFunc(idle)
 
-    glutMainLoop()  # Enter the GLUT main loop
+    glutMainLoop()
 
 if __name__ == "__main__":
     main()
