@@ -11,9 +11,9 @@ starting_time=time.time()
 camera_pos = (500,0,375)
 looking=(0,0,0)
 up_vector=(0,0,1)
-
 fovY = 120  # Field of view
-GRID_LENGTH = 500  # Length of grid lines
+
+GRID_LENGTH = 500
 road_segment_start=[600,-600,-1800]
 road_segment_end=[-600,-1800,-3000]
 ending=-3000
